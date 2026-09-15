@@ -169,14 +169,18 @@ gap they do not cover.
 
 ### Design considerations
 
-- The emoji should depict a hand with a finger raised to the mouth, with the nail
-  area visible near the teeth.
-- Skin tone support (FITZPATRICK) should be supported via emoji modifier sequences,
-  as the hand is a prominent element.
-- The design should be distinguishable from 🫦 biting lip (which shows lips only)
-  by including the finger/hand element.
-- At 18×18 pixels, the key distinguishing features are: finger raised to mouth,
-  visible nail/fingertip at the mouth area.
+- The emoji depicts a close-up of a mouth (lips) biting a finger, styled like
+  🫦 biting lip but with a finger entering the mouth from the side. This visual
+  parallel makes the relationship to 🫦 immediately clear while distinguishing it
+  by the presence of the finger and visible fingernail.
+- The finger enters horizontally from the right, with the fingernail (the part
+  being bitten) visible at the lip line.
+- Skin tone support (FITZPATRICK) should be supported via emoji modifier
+  sequences, as the finger is a prominent element.
+- At 18×18 pixels, the key distinguishing features are: lips + a finger
+  crossing into the mouth with a visible nail.
+- The design parallels 🫦 biting lip (lips only) by using the same close-up mouth
+  composition, adding the finger/nail as the distinguishing element.
 
 ### Sort location
 

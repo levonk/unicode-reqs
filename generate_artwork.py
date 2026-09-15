@@ -11,30 +11,66 @@ def new_canvas(size):
 
 
 def draw_nail_biting(size):
-    """A face profile with a finger/hand at the mouth, biting a nail."""
+    """A close-up of a mouth biting a finger/nail, styled like 🫦 biting lip."""
     img = new_canvas(size)
     d = ImageDraw.Draw(img)
     s = size / 72.0  # scale factor
 
-    # Face (yellow circle, left portion visible as profile)
-    face_color = (255, 200, 60, 255)
-    d.ellipse([8*s, 10*s, 56*s, 64*s], fill=face_color)
+    lip_color = (210, 95, 105, 255)
+    lip_dark = (160, 55, 65, 255)
+    mouth_interior = (95, 25, 30, 255)
+    skin_color = (255, 205, 165, 255)
+    skin_shadow = (220, 170, 130, 255)
+    nail_color = (245, 225, 205, 255)
+    nail_tip = (255, 245, 235, 255)
 
-    # Hair / top of head
-    d.ellipse([8*s, 4*s, 56*s, 30*s], fill=(120, 80, 40, 255))
+    # Upper lip (two peaks) - drawn as a filled shape across the top
+    # Upper lip outer outline (wider)
+    d.polygon([
+        (10*s, 28*s), (22*s, 22*s), (30*s, 26*s),
+        (36*s, 22*s), (44*s, 26*s), (52*s, 22*s), (62*s, 28*s),
+        (62*s, 34*s), (10*s, 34*s),
+    ], fill=lip_color)
+    # Upper lip highlight (the cupid's bow dip)
+    d.polygon([
+        (22*s, 24*s), (30*s, 27*s), (36*s, 24*s), (36*s, 30*s), (22*s, 30*s),
+    ], fill=lip_dark)
 
-    # Mouth area (open slightly)
-    d.ellipse([30*s, 38*s, 48*s, 48*s], fill=(180, 90, 90, 255))
+    # Mouth interior (dark gap between lips, on the right side where teeth bite finger)
+    d.ellipse([14*s, 32*s, 58*s, 48*s], fill=mouth_interior)
 
-    # Finger pointing to mouth (skin tone)
-    finger_color = (255, 200, 160, 255)
-    # finger
-    d.rounded_rectangle([40*s, 30*s, 50*s, 60*s], radius=int(4*s), fill=finger_color)
-    # fingernail being bitten (small white/cream oval at fingertip near mouth)
-    d.ellipse([42*s, 28*s, 50*s, 36*s], fill=(240, 220, 200, 255))
+    # Lower lip (full, rounded) - drawn as a wide ellipse
+    d.ellipse([12*s, 40*s, 60*s, 62*s], fill=lip_color)
+    # Lower lip highlight (lighter, gives volume)
+    d.ellipse([20*s, 44*s, 52*s, 58*s], fill=(230, 120, 130, 255))
+    # Lower lip shadow line (where upper meets lower on the left)
+    d.line([(12*s, 38*s), (58*s, 38*s)], fill=lip_dark, width=max(1, int(2*s)))
 
-    # Eye
-    d.ellipse([22*s, 24*s, 30*s, 32*s], fill=(40, 40, 40, 255))
+    # The finger being bitten - comes in from the right side, horizontal
+    # Finger body (skin-toned, entering from right edge)
+    d.rounded_rectangle([40*s, 30*s, 72*s, 50*s], radius=int(6*s), fill=skin_color)
+    # Finger shadow (underside)
+    d.rounded_rectangle([40*s, 44*s, 72*s, 50*s], radius=int(6*s), fill=skin_shadow)
+    # Fingernail (the part being bitten, visible at the fingertip near the mouth)
+    d.ellipse([38*s, 32*s, 50*s, 44*s], fill=nail_color)
+    # Nail tip highlight
+    d.ellipse([40*s, 33*s, 46*s, 39*s], fill=nail_tip)
+    # Cuticle line (where nail meets finger)
+    d.arc([38*s, 32*s, 50*s, 44*s], 180, 360, fill=(200, 180, 160, 255), width=max(1, int(1*s)))
+
+    # Re-draw the part of the mouth/lips that's in front of the finger (left portion)
+    # Upper lip over the finger
+    d.polygon([
+        (10*s, 28*s), (22*s, 22*s), (30*s, 26*s),
+        (36*s, 22*s), (40*s, 26*s), (40*s, 34*s), (10*s, 34*s),
+    ], fill=lip_color)
+    # Lower lip over the finger (left portion)
+    d.ellipse([12*s, 40*s, 42*s, 62*s], fill=lip_color)
+    d.ellipse([20*s, 44*s, 40*s, 58*s], fill=(230, 120, 130, 255))
+
+    # Lip outline for definition
+    d.line([(10*s, 30*s), (40*s, 30*s)], fill=lip_dark, width=max(1, int(1.5*s)))
+    d.line([(10*s, 38*s), (42*s, 38*s)], fill=lip_dark, width=max(1, int(1.5*s)))
 
     return img
 
