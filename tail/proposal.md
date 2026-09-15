@@ -10,9 +10,9 @@
 
 **Proposed Unicode and CLDR name:** Tail
 
-**Keywords:** animal, appendage, caudal, dog, fur, mammal, pet, rear, swish, wag
+**Keywords:** animal, appendage, caudal, demon, devil, pointed, rear, spade, supernatural, tail, tip
 
-**Category:** Animals & Nature — animal-mammal (as a body-part emoji, analogous to 🐽 pig nose, 🦴 bone)
+**Category:** Animals & Nature — animal-mammal (as a body-part emoji, analogous to 🐽 pig nose, 🦴 bone); or Smileys & Emotion — as a supernatural/fantasy element
 
 ---
 
@@ -53,19 +53,23 @@ The tail conveys several distinct concepts:
 1. **Animal body part:** The tail is a fundamental anatomical feature of most
    vertebrates and many invertebrates — used for balance, locomotion, defense,
    social signaling, and mating displays.
-2. **Emotion / mood (metaphor):** A wagging tail universally signals happiness or
+2. **Supernatural / fantasy:** A pointed, spade-tipped tail is the universal visual
+   shorthand for demons, devils, and supernatural creatures in fantasy, horror,
+   and Halloween contexts. The spade-tipped demon tail is as iconic as the devil's
+   pitchfork or a vampire's fangs.
+3. **Emotion / mood (metaphor):** A wagging tail universally signals happiness or
    excitement (especially for dogs); a tucked tail signals fear or submission.
-3. **Following / trailing:** "Tail" means to follow closely ("tail someone," "on
+4. **Following / trailing:** "Tail" means to follow closely ("tail someone," "on
    someone's tail"), a common idiom.
-4. **End / rear:** "Tail end" means the last part of something (tail of a
+5. **End / rear:** "Tail end" means the last part of something (tail of a
    distribution, tail of a line, tail of a comet).
-5. **Fashion:** "Tail" refers to the tail of a coat or tuxedo (formal wear).
+6. **Fashion:** "Tail" refers to the tail of a coat or tuxedo (formal wear).
 
 ### B. Use in sequences
 
+- 😈🫠 — demon/devil tail (smiling devil + tail)
+- 👹🫠 — demon/oni with tail
 - 🐶🫠 — happy dog wagging tail (dog + tail)
-- 🐱🫠 — cat with tail
-- 🫠😍 — wagging tail excitement
 - 🫠🏃 — tailing someone (following)
 - 🫠📉 — long tail (statistics/business)
 
@@ -167,11 +171,16 @@ standalone animal body part.
 
 ### Design considerations
 
-- The emoji should depict a generic curved tail (mammalian style) with a slightly
-  fluffy/furred tip, recognizable across species.
-- A tan/brown color scheme allows it to represent a range of animals.
-- At 18×18 pixels, the key distinguishing features are: curved appendage rising
-  from a base, with a slightly wider/fluffy tip.
+- The emoji depicts a thin, curving tail ending in a spade/arrowhead tip — the
+  classic demon/devil tail shape recognizable across fantasy, horror, and
+  Halloween imagery.
+- A dark red/maroon color scheme evokes the supernatural/demonic association while
+  remaining legible at small sizes.
+- At 18×18 pixels, the key distinguishing features are: a thin curving line with a
+  pointed spade tip.
+- The spade tip distinguishes this from any animal tail that might be implied by
+  full-animal emoji, and makes it instantly recognizable as a demon/supernatural
+  tail rather than a generic mammalian appendage.
 - The design should be distinct from 🐾 paw prints (footprints) and 🦴 bone
   (skeletal element).
 

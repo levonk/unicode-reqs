@@ -8,7 +8,7 @@ Five emoji proposals prepared following the [Unicode Emoji Proposal Guidelines](
 |---|---|---|---|---|
 | 1 | Nail Biting | `nail-biting/` | People & Body — hand-fingers-partial | Distinct from 💅 nail polish and 🫦 biting lip |
 | 2 | Whip | `whip/` | Objects — tool | No existing conflict; breaks new ground |
-| 3 | Tail | `tail/` | Animals & Nature — animal-mammal | Standalone body part (like 🐽 pig nose, 🦴 bone) |
+| 3 | Tail | `tail/` | Animals & Nature — animal-mammal | Demon tail (spade tip); standalone body part (like 🐽 pig nose, 🦴 bone) |
 | 4 | Sharp Teeth | `sharp-teeth/` | People & Body — body-parts | Renamed from "fangs" to avoid overlap with 🧛 vampire |
 | 5 | Bull Horns | `bull-horns/` | Animals & Nature — animal-mammal | Distinct from 🤘 sign of the horns (hand gesture) and ♉ Taurus (glyph) |
 

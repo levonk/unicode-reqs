@@ -40,155 +40,236 @@ def draw_nail_biting(size):
 
 
 def draw_whip(size):
-    """A whip with a handle and a curved lash."""
+    """A whip with a distinct handle and a long, dramatic curving lash."""
     img = new_canvas(size)
     d = ImageDraw.Draw(img)
     s = size / 72.0
-
-    # Handle (brown)
-    handle_color = (101, 67, 33, 255)
-    d.rounded_rectangle([6*s, 50*s, 22*s, 66*s], radius=int(3*s), fill=handle_color)
-    # grip pattern
-    d.line([10*s, 52*s, 10*s, 64*s], fill=(70, 45, 20, 255), width=max(1, int(2*s)))
-    d.line([18*s, 52*s, 18*s, 64*s], fill=(70, 45, 20, 255), width=max(1, int(2*s)))
-
-    # Lash (black/dark curving line from handle)
-    lash_color = (40, 40, 40, 255)
-    w = max(2, int(4*s))
-    # Draw a curved lash using an arc-like polyline
-    points = []
-    cx, cy = 20*s, 52*s
-    # Create a sweeping curve
     import math
-    for i in range(0, 60):
-        t = i / 59.0
-        # parametric curve sweeping up and to the right then curving
-        x = cx + t * 46 * s
-        y = cy - 40 * s * math.sin(t * math.pi * 0.9) + 8 * s * t
+
+    # Handle (brown, short and thick, clearly a grip)
+    handle_color = (120, 75, 35, 255)
+    handle_dark = (80, 50, 20, 255)
+    # Handle body - a short cylinder at bottom-left
+    hx0, hy0, hx1, hy1 = 8*s, 54*s, 24*s, 70*s
+    d.rounded_rectangle([hx0, hy0, hx1, hy1], radius=int(4*s), fill=handle_color)
+    # Pommel/cap at the bottom of the handle
+    d.ellipse([hx0-2*s, hy1-6*s, hx1+2*s, hy1+2*s], fill=handle_dark)
+    # Grip bands (wrapping pattern)
+    for gy in range(int(58*s), int(68*s), int(4*s)):
+        d.line([hx0+1*s, gy, hx1-1*s, gy], fill=handle_dark, width=max(1, int(2*s)))
+    # Ferrule (metal band where lash attaches) at top of handle
+    d.rectangle([hx0, hy0-2*s, hx1, hy0+3*s], fill=(180, 180, 180, 255))
+
+    # Lash (long, tapering, sweeping curve from top of handle)
+    lash_color = (50, 40, 35, 255)
+    # Start point: top of handle
+    sx, sy = (hx0+hx1)/2, hy0
+    # Build a dramatic S-curve lash sweeping up and to the right
+    points = []
+    for i in range(0, 80):
+        t = i / 79.0
+        # Big sweeping arc: up, curving right, then arcing over and down
+        x = sx + t * 48 * s
+        y = sy - 52 * s * math.sin(t * math.pi * 0.85) + 6 * s * t * t
         points.append((x, y))
+
+    # Draw lash with tapering width (thick near handle, thin at tip)
     for i in range(len(points) - 1):
+        t = i / (len(points) - 1)
+        w = max(1, int((5 - 4*t) * s))
+        if w < 1:
+            w = 1
         d.line([points[i], points[i+1]], fill=lash_color, width=w)
-    # tip cracker (small frayed end)
+
+    # Cracker/popper at the very tip (frayed end)
     tip = points[-1]
-    d.line([tip, (tip[0]+6*s, tip[1]-4*s)], fill=lash_color, width=max(1, int(2*s)))
-    d.line([tip, (tip[0]+6*s, tip[1]+2*s)], fill=lash_color, width=max(1, int(2*s)))
+    for ang in (-30, -10, 10, 30):
+        rad = math.radians(ang)
+        d.line([tip, (tip[0]+8*s*math.cos(rad), tip[1]+8*s*math.sin(rad))],
+               fill=lash_color, width=max(1, int(1.5*s)))
 
     return img
 
 
 def draw_tail(size):
-    """A generic mammalian tail curving upward."""
+    """A demon tail: thin, curving, ending in a spade/arrowhead tip."""
     img = new_canvas(size)
     d = ImageDraw.Draw(img)
     s = size / 72.0
-
-    # Tail as a thick curved line, brown/tan
-    tail_color = (160, 110, 60, 255)
-    w = max(3, int(10*s))
-
     import math
+
+    # Demon tail color (dark red/maroon)
+    tail_color = (130, 30, 40, 255)
+    tail_dark = (90, 15, 25, 255)
+
+    # Thin curving tail starting bottom-left, sweeping up in an S-curve
     points = []
-    for i in range(0, 50):
-        t = i / 49.0
-        # S-curve tail starting bottom-left, curving up and to the right
-        x = 10*s + t * 50 * s
-        y = 60*s - 45 * s * t + 10 * s * math.sin(t * math.pi * 1.5)
+    for i in range(0, 60):
+        t = i / 59.0
+        # S-curve from bottom-left up to upper-right
+        x = 8*s + t * 48 * s
+        y = 64*s - 50 * s * t + 12 * s * math.sin(t * math.pi * 2.2)
         points.append((x, y))
 
+    # Draw tail with tapering width (thicker at base, thin toward tip)
     for i in range(len(points) - 1):
+        t = i / (len(points) - 1)
+        w = max(1, int((5 - 3.5*t) * s))
+        if w < 1:
+            w = 1
         d.line([points[i], points[i+1]], fill=tail_color, width=w)
 
-    # Fluffy tip (slightly wider/fuzzy)
+    # Spade/arrowhead tip (the classic demon tail ending)
     tip = points[-1]
-    r = int(7*s)
-    d.ellipse([tip[0]-r, tip[1]-r, tip[0]+r, tip[1]+r], fill=tail_color)
+    # Direction of the tail at the tip
+    prev = points[-4]
+    dx, dy = tip[0] - prev[0], tip[1] - prev[1]
+    length = max(0.1, math.sqrt(dx*dx + dy*dy))
+    ux, uy = dx/length, dy/length  # unit vector along tail direction
+    # Perpendicular
+    px, py = -uy, ux
+
+    spade_len = 12 * s
+    spade_w = 7 * s
+    # Spade tip: a triangle pointing in the direction of the tail, with a notch at the base
+    tip_point = (tip[0] + ux * spade_len, tip[1] + uy * spade_len)
+    left = (tip[0] + px * spade_w, tip[1] + py * spade_w)
+    right = (tip[0] - px * spade_w, tip[1] - py * spade_w)
+    # Notch (inner V cut) at the base of the spade
+    notch = (tip[0] - ux * spade_len * 0.3, tip[1] - uy * spade_len * 0.3)
+
+    # Draw spade as two triangles forming the arrowhead with a notch
+    d.polygon([tip_point, left, notch], fill=tail_color)
+    d.polygon([tip_point, right, notch], fill=tail_color)
+    # Outline for definition
+    d.line([tip_point, left], fill=tail_dark, width=max(1, int(1.5*s)))
+    d.line([tip_point, right], fill=tail_dark, width=max(1, int(1.5*s)))
+    d.line([left, notch], fill=tail_dark, width=max(1, int(1.5*s)))
+    d.line([right, notch], fill=tail_dark, width=max(1, int(1.5*s)))
 
     return img
 
 
 def draw_sharp_teeth(size):
-    """An open mouth showing pointed/sharp teeth."""
+    """An open mouth with clearly visible lips and sharp, fang-like teeth."""
     img = new_canvas(size)
     d = ImageDraw.Draw(img)
     s = size / 72.0
 
-    # Mouth outline (dark red interior)
-    d.rounded_rectangle([10*s, 20*s, 62*s, 56*s], radius=int(8*s), fill=(140, 30, 30, 255))
+    lip_color = (200, 80, 90, 255)
+    lip_dark = (150, 50, 60, 255)
+    mouth_interior = (90, 20, 25, 255)
+    teeth_color = (250, 250, 245, 255)
+    teeth_shadow = (200, 200, 195, 255)
+    tongue_color = (210, 90, 95, 255)
 
-    # Upper teeth (white triangles pointing down)
-    teeth_color = (255, 255, 255, 255)
-    n_upper = 5
-    x_start = 14*s
-    x_end = 58*s
+    # Mouth interior (dark oval/rounded shape)
+    d.ellipse([10*s, 18*s, 62*s, 58*s], fill=mouth_interior)
+
+    # Upper lip (a curved band across the top of the mouth)
+    d.arc([10*s, 14*s, 62*s, 40*s], 180, 360, fill=lip_color, width=max(2, int(5*s)))
+    # Lower lip (a curved band across the bottom)
+    d.arc([10*s, 36*s, 62*s, 62*s], 0, 180, fill=lip_color, width=max(2, int(5*s)))
+    # Fill in lips more solidly
+    d.ellipse([10*s, 14*s, 62*s, 22*s], fill=lip_color)  # upper lip fill
+    d.ellipse([10*s, 54*s, 62*s, 62*s], fill=lip_color)  # lower lip fill
+
+    # Re-draw mouth interior over the lip fills (leave lip bands at top/bottom)
+    d.ellipse([14*s, 22*s, 58*s, 52*s], fill=mouth_interior)
+
+    # Upper teeth (sharp triangles pointing down) - with longer canines at the sides
+    n_upper = 6
+    x_start = 16*s
+    x_end = 56*s
     step = (x_end - x_start) / (n_upper - 1)
-    tw = 7*s  # tooth width
     for i in range(n_upper):
         cx = x_start + i * step
-        d.polygon([(cx-tw/2, 22*s), (cx+tw/2, 22*s), (cx, 36*s)], fill=teeth_color)
+        # Canines (first and last) are longer; middle teeth slightly shorter
+        is_canine = (i == 0 or i == n_upper - 1)
+        tooth_h = 16*s if is_canine else 11*s
+        tw = 6*s if is_canine else 5*s
+        d.polygon([(cx-tw/2, 23*s), (cx+tw/2, 23*s), (cx, 23*s+tooth_h)], fill=teeth_color)
+        # Subtle shading on teeth
+        d.line([(cx, 23*s), (cx, 23*s+tooth_h)], fill=teeth_shadow, width=max(1, int(1*s)))
 
-    # Lower teeth (white triangles pointing up)
-    for i in range(n_upper):
+    # Lower teeth (sharp triangles pointing up) - offset, with canines
+    for i in range(n_upper - 1):
         cx = x_start + i * step + step/2
-        d.polygon([(cx-tw/2, 54*s), (cx+tw/2, 54*s), (cx, 42*s)], fill=teeth_color)
+        is_canine = (i == 0 or i == n_upper - 2)
+        tooth_h = 14*s if is_canine else 10*s
+        tw = 6*s if is_canine else 5*s
+        d.polygon([(cx-tw/2, 51*s), (cx+tw/2, 51*s), (cx, 51*s-tooth_h)], fill=teeth_color)
+        d.line([(cx, 51*s), (cx, 51*s-tooth_h)], fill=teeth_shadow, width=max(1, int(1*s)))
 
-    # Lips outline
-    d.rounded_rectangle([8*s, 18*s, 64*s, 58*s], radius=int(9*s), outline=(180, 80, 80, 255), width=max(1, int(3*s)))
+    # Tongue (visible at the bottom center of the mouth)
+    d.ellipse([24*s, 44*s, 48*s, 52*s], fill=tongue_color)
+
+    # Lip outline for definition
+    d.ellipse([10*s, 16*s, 62*s, 60*s], outline=lip_dark, width=max(1, int(2*s)))
 
     return img
 
 
 def draw_bull_horns(size):
-    """A pair of curved bull horns."""
+    """A pair of bull horns sweeping outward to the sides then forward (not ram-curl)."""
     img = new_canvas(size)
     d = ImageDraw.Draw(img)
     s = size / 72.0
-
-    horn_color = (200, 180, 150, 255)
-    horn_dark = (150, 130, 100, 255)
-
     import math
 
-    # Left horn
-    left_pts = []
-    for i in range(0, 40):
-        t = i / 39.0
-        # Start near center-bottom, curve up and out to the left
-        angle = math.pi * (0.5 + 0.7 * t)
-        r = 8*s + 26*s * t
-        cx, cy = 30*s, 40*s
-        x = cx - r * math.sin(angle - math.pi*0.5) * 0.6
-        y = cy - r * math.cos(angle - math.pi*0.5) * 0.8
-        left_pts.append((x, y))
+    horn_color = (215, 195, 160, 255)
+    horn_dark = (165, 140, 105, 255)
+    base_color = (180, 155, 120, 255)
 
-    # Right horn (mirror)
-    right_pts = []
-    for i in range(0, 40):
-        t = i / 39.0
-        angle = math.pi * (0.5 + 0.7 * t)
-        r = 8*s + 26*s * t
-        cx, cy = 42*s, 40*s
-        x = cx + r * math.sin(angle - math.pi*0.5) * 0.6
-        y = cy - r * math.cos(angle - math.pi*0.5) * 0.8
-        right_pts.append((x, y))
+    # Base (small forehead/skull plate where horns attach)
+    d.ellipse([28*s, 50*s, 44*s, 62*s], fill=base_color)
 
-    w_base = max(3, int(10*s))
-    w_tip = max(1, int(2*s))
+    def draw_horn(start_x, start_y, direction):
+        """Draw a single horn sweeping outward then forward, tapering to a point.
+        direction: -1 for left, +1 for right."""
+        points = []
+        for i in range(0, 50):
+            t = i / 49.0
+            # Horn goes outward (to the side) then curves forward (downward in image)
+            # and slightly up at the very tip
+            outward = direction * (8*s + 30*s * t)
+            forward = -2*s * t + 6 * s * (t ** 2)  # slight forward droop then up
+            up = -18 * s * t  # rises as it goes out
+            x = start_x + outward
+            y = start_y + up + forward
+            points.append((x, y))
 
-    def draw_tapered(pts, w_start, w_end):
-        for i in range(len(pts) - 1):
-            t = i / (len(pts) - 1)
-            w = int(w_start + (w_end - w_start) * t)
-            d.line([pts[i], pts[i+1]], fill=horn_color, width=w)
+        # Draw with tapering width
+        for i in range(len(points) - 1):
+            t = i / (len(points) - 1)
+            w = max(1, int((9 - 7*t) * s))
+            if w < 1:
+                w = 1
+            d.line([points[i], points[i+1]], fill=horn_color, width=w)
 
-    draw_tapered(left_pts, w_base, w_tip)
-    draw_tapered(right_pts, w_base, w_tip)
+        # Sharp tip
+        tip = points[-1]
+        tip_r = max(1, int(2*s))
+        d.ellipse([tip[0]-tip_r, tip[1]-tip_r, tip[0]+tip_r, tip[1]+tip_r], fill=horn_dark)
 
-    # Tips (sharper)
-    d.ellipse([left_pts[-1][0]-w_tip, left_pts[-1][1]-w_tip, left_pts[-1][0]+w_tip, left_pts[-1][1]+w_tip], fill=horn_dark)
-    d.ellipse([right_pts[-1][0]-w_tip, right_pts[-1][1]-w_tip, right_pts[-1][0]+w_tip, right_pts[-1][1]+w_tip], fill=horn_dark)
+        # Add ridges/rings on the horn for texture
+        for ring_t in (0.2, 0.4, 0.6):
+            idx = int(ring_t * (len(points) - 1))
+            p = points[idx]
+            # Perpendicular to horn direction for ring
+            if idx + 1 < len(points):
+                dx = points[idx+1][0] - p[0]
+                dy = points[idx+1][1] - p[1]
+                length = max(0.1, math.sqrt(dx*dx + dy*dy))
+                px, py = -dy/length, dx/length
+                rw = max(1, int((9 - 7*ring_t) * s * 0.5))
+                d.line([(p[0]-px*rw, p[1]-py*rw), (p[0]+px*rw, p[1]+py*rw)],
+                       fill=horn_dark, width=max(1, int(1*s)))
 
-    # Base plate (small skull/head hint)
-    d.ellipse([26*s, 38*s, 46*s, 56*s], fill=(200, 180, 150, 255))
+    # Left horn (sweeps left, then forward/up)
+    draw_horn(30*s, 50*s, -1)
+    # Right horn (sweeps right, then forward/up)
+    draw_horn(42*s, 50*s, 1)
 
     return img
 
